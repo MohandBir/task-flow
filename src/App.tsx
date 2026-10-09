@@ -2,8 +2,8 @@
 function App() {
 
   return (
-   <div className="bg-red-400">
-      test
+   <div className="">
+      <button className="btn btn-accent">test</button>
    </div>
   )
 }
