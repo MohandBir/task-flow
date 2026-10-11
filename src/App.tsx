@@ -1,10 +1,50 @@
-type Priority = "urgente" | "moyenne" | "Basse";
+import { todo } from "node:test";
+import { useEffect, useState } from "react";
+
+type Priority = "urgente" | "Moyenne" | "Basse";
 type Todo = {
   id: number;
   text: string;
   priority: Priority
 }
 function App() {
+
+  const [input, setInput] = useState(""); //la champ de input est string par defaut , pas obligatoire de rajouter <string>
+  const [priority, setPriority] = useState<Priority>("Moyenne"); 
+
+  const savedTodos = localStorage.getItem("todos")
+  const initialTodos = savedTodos ? JSON.parse(savedTodos) : []
+  const [todos , setTodos] = useState<Todo[j]>(initialTodos); 
+  const [filter, setFiter] = useState<Priority | "tous">("Tous")
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
+
+  function addTodo() {
+    if (input.trim() == "") {
+      return;
+    } 
+
+    const newTodo: Todo = {
+      id: Date.now(),
+      text: input.trim(),
+      priority: priority
+    }
+
+    const newTodos = [newTodo, ...todos];
+    setTodos(newTodos);
+    setInput("");
+    setPriority("Moyenne");
+  }
+
+  let filteredTodos: Todo[] = []
+ 
+  if (filter === "Tous"){
+    filteredTodos = todos
+  }else {
+    filteredTodos = todos.filter((todo) => todo.priority === filter)
+  }
 
   return (
    <div className="flex justify-center">
@@ -14,17 +54,43 @@ function App() {
           type="text" 
           className="input w-full"
           placeholder="Ajouter une tâche..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           />
           <select
           className="selct w-full"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value as Priority)}
           > 
           <option value="Urgente">Urgente</option>
           <option value="Moyenne">Moyenne</option>
           <option value="Basse">Basse</option>
           </select>
-          <button className="btn btn-primary">
+          <button onClick={addTodo} className="btn btn-primary">
             Ajouter
           </button>
+        </div>
+        <div className="space-y-2 flex-1 h-fit">
+          <div className="flex flex-wrap gap-4">
+            <button
+            
+            >
+                Tous
+            </button>
+          </div>
+          {filteredTodos.length > 0 ? (
+            <ul className="divide-y divide-primary/20">
+              { filteredTodos.map((todo) => (
+                <li>
+                  {todo.text}
+                </li>
+                ))}
+            </ul>
+        
+          ) : (
+            <div>test2</div>
+          )
+        }
         </div>
       </div>
    </div>
