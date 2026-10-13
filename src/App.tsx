@@ -1,7 +1,6 @@
-import { todo } from "node:test";
 import { useEffect, useState } from "react";
 
-type Priority = "urgente" | "Moyenne" | "Basse";
+type Priority = "Urgente" | "Moyenne" | "Basse";
 type Todo = {
   id: number;
   text: string;
@@ -14,8 +13,8 @@ function App() {
 
   const savedTodos = localStorage.getItem("todos")
   const initialTodos = savedTodos ? JSON.parse(savedTodos) : []
-  const [todos , setTodos] = useState<Todo[j]>(initialTodos); 
-  const [filter, setFiter] = useState<Priority | "tous">("Tous")
+  const [todos , setTodos] = useState<Todo[]>(initialTodos); 
+  const [filter, setFiter] = useState<Priority | "Tous">("Tous")
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
