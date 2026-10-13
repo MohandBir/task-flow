@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import TodoItem from "./todoItem";
+import { Construction } from "lucide-react";
 
 type Priority = "Urgente" | "Moyenne" | "Basse";
 type Todo = {
@@ -50,6 +51,11 @@ function App() {
   const mediumCount = todos.filter((t) => t.priority === "Moyenne").length;
   const lowCount = todos.filter((t) => t.priority === "Basse").length;
   const totalCount = todos.length;
+
+  function deleteTodo(id: number) {
+    const newTodos = todos.filter((todo) => todo.id !== id)
+    setTodos(newTodos)
+  }
 
   return (
    <div className="flex justify-center">
@@ -104,13 +110,21 @@ function App() {
             <ul className="divide-y divide-primary/20">
               { filteredTodos.map((todo) => (
                 <li key={todo.id}>
-                  <TodoItem todo={todo}/>
+                  <TodoItem 
+                  todo={todo}
+                  onDelete={() => {deleteTodo(todo.id)}}
+                  />
                 </li>
                 ))}
             </ul>
         
           ) : (
-            <div>test2</div>
+            <div>
+              <div className="flex justify-center items-center flex-col p-5">
+                <Construction strokeWidth={1} className="w-40 h-40 text-primary" />
+              </div>
+              <p className="text-small"> Aucun tâche pour ce filtre </p>
+            </div>
           )
         }
         </div>

@@ -10,9 +10,10 @@ type Todo = {
 
 type Props = {
     todo: Todo
+    onDelete: () => void
 }
 
-const TodoItem = ({ todo}: Props) => {
+const TodoItem = ({ todo, onDelete}: Props) => {
     return (
         <li className="p-3">
             <div className="flex justify-between items-center">
@@ -37,6 +38,7 @@ const TodoItem = ({ todo}: Props) => {
                     </span>
                 </div>
                 <button 
+                    onClick={onDelete}
                   className="btn btn-sm btn-error btn-soft"
                 >
                     <Trash className="w-4 h-4" />
